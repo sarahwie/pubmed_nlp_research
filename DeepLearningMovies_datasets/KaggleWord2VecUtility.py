@@ -34,7 +34,31 @@ class KaggleWord2VecUtility(object):
         #
         # 5. Return a list of words
         return(words)
-
+        
+    @staticmethod
+    def review_to_words( review, remove_stopwords=False ):
+        # Function to convert a raw review to a string of words
+        # The input is a single string (a raw movie review), and 
+        # the output is a single string (a preprocessed movie review)
+        #
+        # 1. Remove HTML
+        review_text = BeautifulSoup(review).get_text() 
+        #
+        # 2. Remove non-letters        
+        review_text = re.sub("[^a-zA-Z]", " ", review_text) 
+        #
+        # 3. Convert to lower case, split into individual words
+        words = review_text.lower().split()                             
+        #
+        # 4. Optionally remove stop words (false by default)
+        if remove_stopwords:
+            stops = set(stopwords.words("english"))
+            words = [w for w in words if not w in stops]   
+        #
+        # 6. Join the words back into one string separated by space, 
+        # and return the result.
+        return( " ".join( words ))   
+    
     # Define a function to split a review into parsed sentences
     @staticmethod
     def review_to_sentences( review, tokenizer, remove_stopwords=False ):
